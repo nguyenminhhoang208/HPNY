@@ -29,16 +29,10 @@ class FireWork{
             for (let i = 0; i < 2; i++) {
                 this.particleArray.push(new Particle(this.x,this.y))
             }
-            //  console.log(this.particleArray);
-            
         }
         if(this.y < this.height)
         {
             this.size = 0
-            // for (let i = 0; i < 5; i++) {
-            //     this.burstFireWorkArray.push(new BurstFireWork(this.x,this.y))
-            // }
-            
         }
     }
     draw(){
@@ -46,9 +40,7 @@ class FireWork{
         ctx.fillStyle = this.color
         ctx.arc(this.x,this.y,this.size,0,Math.PI * 2)
         ctx.fill()
-        
     }
-    
 }
 
 class Particle{
@@ -105,15 +97,10 @@ class BurstFireWorkArray{
         let array = []
         for (let i = 0; i < 50; i++) {
             const burstFireWork = new BurstFireWork(x,y)
-            // console.log(burstFireWork);
-            // this.burstFireWorkArray.push(burstFireWork)
             array = [...array,burstFireWork]
-            // console.log(array);
 
         }
         this.burstFireWorkArray = [...array]
-        console.log(this.burstFireWorkArray);
-
     }
 }
 function handleParticle(particleArray){
@@ -129,11 +116,7 @@ function handleParticle(particleArray){
 }
 
 function animateParticle(particleArray){
-    // while(particleArray.length > 0)
-    // {
         handleParticle(particleArray)
-    // }
-        // requestAnimationFrame(animateParticle)
 }
 function check(x) {
     return fireWorksArray.find((curr)=>{
@@ -146,23 +129,20 @@ function handleBurstFireWork() {
     {
         for(let j = 0; j < burstFireWorkArrays[i].burstFireWorkArray.length;j++)
         {
-            // console.log(burstFireWorkArrays[i].burstFireWorkArray[j]);
             burstFireWorkArrays[i].burstFireWorkArray[j].draw()
             burstFireWorkArrays[i].burstFireWorkArray[j].update()
             if(burstFireWorkArrays[i].burstFireWorkArray[j].size == 0) burstFireWorkArrays[i].burstFireWorkArray.splice(j,1)
         }
-        // if(burstFireWorkArrays[i] = []) burstFireWorkArrays.splice(i,1)
     }
-    
 }
 
 function animateBurstFireWork() {
     ctx.clearRect(0 , 0, canvas.width,canvas.height)
     handleBurstFireWork()
-    console.log(burstFireWorkArrays);
     requestAnimationFrame(animateBurstFireWork)
 }
 animateBurstFireWork()
+
 function handleFireWork(){
     for (let i = 0; i < fireWorksArray.length; i++) {
         fireWorksArray[i].draw()
@@ -170,49 +150,36 @@ function handleFireWork(){
         animateParticle(fireWorksArray[i].particleArray)
         if(fireWorksArray[i].size == 0 )
         {
-            // console.log(fireWorksArray[i]);
             const burstFireWorkArray = new BurstFireWorkArray()
             burstFireWorkArray.setBurstFireWorkArray(fireWorksArray[i].x,fireWorksArray[i].y)
             burstFireWorkArrays.push(burstFireWorkArray)
-            console.log(burstFireWorkArray.burstFireWorkArray);
             fireWorksArray.splice(i,1)
-// animateBurstFireWork()
-// handleBurstFireWork()
-
         }
     }
-    // handleBurstFireWork()
-
 }
 
-
-// canvas.addEventListener('click',()=>{
-//     while(fireWorksArray.length < 20){
-//         const fireWork = new FireWork()
-//         if(!check(fireWork.x))
-//         {
-//             // for (let i = 0; i < 2; i++) {
-//             //     fireWork.particleArray.push(new Particle(fireWork.x,fireWork.y))
-//             // }
-//             fireWorksArray.push(fireWork)
-//         }
-//     }
-// })
-
 function animate(){
-    
     while(fireWorksArray.length < 20){
         const fireWork = new FireWork()
         if(!check(fireWork.x))
         {
-            // for (let i = 0; i < 2; i++) {
-            //     fireWork.particleArray.push(new Particle(fireWork.x,fireWork.y))
-            // }
             fireWorksArray.push(fireWork)
         }
     }
-    // ctx.clearRect(0 , 0, canvas.width,canvas.height)
     handleFireWork()
     requestAnimationFrame(animate)
 }
 animate()
+const audioTag = document.getElementById('audio')
+const sound = document.querySelector('.sound')
+const soundIcons= document.querySelectorAll('.sound .icon')
+// console.log(soundIcons);
+
+sound.addEventListener('click',()=>{
+    for(let soundIcon of soundIcons)
+    {
+        soundIcon.classList.toggle('active')
+    }
+    if(soundIcons[0].classList.contains('active')) audioTag.play()
+    else audioTag.pause()
+})
